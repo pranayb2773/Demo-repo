@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<div id="root">
+		<input v-model="newCat" @keyup.enter="addKitty">
+		<button @click="addKitty">
+			+ ADD
+		</button>
+		<ul>
+			<li v-for="cat in cats">{{ cat.name | capitalize | kittify }}</li>
+		</ul>
+		<cat-list :cats="cats" />
+	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+	Vue.component('cat-list',{
+		props: ['cats'],
+		template: '<ul><li v-for="cat in cats">{{ cat.name}}</li></ul>'
+	});
+	var root = new Vue({
+		el: '#root',
+		component: [
+			'cat-list'
+		],
+		data: {
+			cats: [
+				{ name: 'kitkat' },
+				{ name: 'fish' },
+				{ name:'henry' },
+				{ name:'bosco' },
+				{ name:'melanthios' }
+			],
+			newCat: ''
+		},
+		methods: {
+			addKitty: function(){
+				this.cats.push({name: this.newCat});
+				this.newCat = '';
+			},
+
+		},
+		created: function(){
+			alert('created');
+		},
+		mounted: function(){
+			alert('mounted');
+		},
+		updated: function(){
+			alert('updated');
+		},
+		destroyed: function(){
+			alert('destroyed');
+		},
+		filters: {
+			capitalize: function(value){
+				return value.toUpperCase();
+			},
+			kittify: function(value){
+				return value + 'y'.toUpperCase();
+			}
+		}
+	});
+
+	setTimeout(function(){
+		root.$destroy();
+	}, 5000);
+</script>
+</body>
+</html>
